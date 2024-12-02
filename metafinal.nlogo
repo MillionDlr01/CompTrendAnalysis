@@ -16,10 +16,15 @@ to go
   play
   update
   ask turtles with [satis <= 0] [die]
+  ask turtles [swapstrat]
+  ;growplayerbase count turtles * growthperc
   growplayerbase random rangrowth
-  if (balancetactic = "randomize") [
-    balance
+  (ifelse (balancetactic = "randomize") [
+    balancerandom
   ]
+  (balancetactic = "reaction") [
+    balancereact
+  ])
   tick
 end
 
@@ -73,8 +78,27 @@ to growplayerbase [num]
   set totplayercnt totplayercnt + num
 end
 
-to balance
+to balancerandom
   set stratstrs n-values numstrats [random 10 + 95]
+end
+
+to balancereact
+  let i 0
+  repeat length stratstrs [
+    let adjust (1 / length stratstrs) - ((count turtles with [strat = i]) / count turtles)
+    let cur item i stratstrs
+    set stratstrs replace-item i stratstrs (cur + (cur * adjust * balforce))
+    set i i + 1
+  ]
+end
+
+; player context
+to swapstrat
+  let x random 100
+  if (deltasatis < -5 and x < swapchance) [
+    set strat random length stratstrs
+    set deltasatis 0
+  ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -172,10 +196,10 @@ numstrats
 Number
 
 PLOT
-0
-295
-216
-464
+669
+10
+885
+179
 Average Satisfaction
 NIL
 NIL
@@ -190,10 +214,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot avgsatis"
 
 MONITOR
-138
-248
-215
-293
+888
+10
+965
+55
 NIL
 avgsatis
 4
@@ -201,10 +225,10 @@ avgsatis
 11
 
 MONITOR
-0
-471
-83
-516
+669
+186
+752
+231
 NIL
 count turtles
 17
@@ -212,10 +236,10 @@ count turtles
 11
 
 MONITOR
-88
-471
-159
-516
+757
+186
+828
+231
 NIL
 avgsatisall
 4
@@ -223,10 +247,10 @@ avgsatisall
 11
 
 MONITOR
-167
-472
-231
-517
+836
+187
+900
+232
 NIL
 retention
 4
@@ -240,27 +264,75 @@ CHOOSER
 161
 balancetactic
 balancetactic
-"none" "randomize"
-1
+"none" "randomize" "reaction"
+2
 
 INPUTBOX
 8
-165
+208
 100
-225
+268
 playrandomness
-0.0
+5.0
 1
 0
 Number
 
 INPUTBOX
 104
-166
+209
 165
-226
+269
 rangrowth
 5.0
+1
+0
+Number
+
+INPUTBOX
+7
+273
+77
+333
+swapchance
+25.0
+1
+0
+Number
+
+MONITOR
+669
+238
+726
+283
+Meta
+modes [strat] of turtles
+17
+1
+11
+
+SLIDER
+8
+167
+180
+200
+balforce
+balforce
+0
+1
+0.15
+0.05
+1
+NIL
+HORIZONTAL
+
+INPUTBOX
+84
+272
+163
+332
+growthperc
+0.0
 1
 0
 Number
