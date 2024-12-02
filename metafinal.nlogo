@@ -17,7 +17,7 @@ to go
   update
   ask turtles with [satis <= 0] [die]
   ask turtles [swapstrat]
-  ;growplayerbase count turtles * growthperc
+  growplayerbase count turtles * growthperc
   growplayerbase random rangrowth
   (ifelse (balancetactic = "randomize") [
     balancerandom
@@ -87,7 +87,7 @@ to balancereact
   repeat length stratstrs [
     let adjust (1 / length stratstrs) - ((count turtles with [strat = i]) / count turtles)
     let cur item i stratstrs
-    set stratstrs replace-item i stratstrs (cur + (cur * adjust * balforce))
+    set stratstrs replace-item i stratstrs round (cur + (cur * adjust * balforce))
     set i i + 1
   ]
 end
@@ -225,10 +225,10 @@ avgsatis
 11
 
 MONITOR
-669
-186
-752
-231
+888
+353
+971
+398
 NIL
 count turtles
 17
@@ -236,10 +236,10 @@ count turtles
 11
 
 MONITOR
-757
-186
-828
-231
+890
+184
+961
+229
 NIL
 avgsatisall
 4
@@ -247,10 +247,10 @@ avgsatisall
 11
 
 MONITOR
-836
-187
-900
-232
+670
+519
+734
+564
 NIL
 retention
 4
@@ -301,10 +301,10 @@ swapchance
 Number
 
 MONITOR
-669
-238
-726
-283
+221
+504
+278
+549
 Meta
 modes [strat] of turtles
 17
@@ -332,10 +332,57 @@ INPUTBOX
 163
 332
 growthperc
-0.0
+0.005
 1
 0
 Number
+
+PLOT
+669
+183
+884
+347
+Average Satisfaction Full
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot avgsatisall"
+
+PLOT
+670
+351
+883
+514
+Playerbase Size
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot count turtles"
+
+MONITOR
+220
+455
+659
+500
+Strategy Strengths
+stratstrs
+3
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
