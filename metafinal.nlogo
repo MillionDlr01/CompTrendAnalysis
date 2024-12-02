@@ -301,10 +301,10 @@ swapchance
 Number
 
 MONITOR
-221
-504
-278
-549
+220
+553
+277
+598
 Meta
 modes [strat] of turtles
 17
@@ -381,6 +381,17 @@ MONITOR
 Strategy Strengths
 stratstrs
 3
+1
+11
+
+MONITOR
+221
+504
+659
+549
+Strategy Usages
+map [i -> count turtles with [strat = i]] range length stratstrs
+17
 1
 11
 
